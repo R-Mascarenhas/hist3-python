@@ -3,6 +3,8 @@
 Created on Mon Mar 20 22:54:21 2017
 
 @author: Rafael
+
+V 1.0.0
 """
 
 import numpy as np

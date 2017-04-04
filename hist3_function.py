@@ -4,7 +4,7 @@ Created on Mon Mar 20 22:54:21 2017
 
 @author: Rafael
 
-V 1.0.0
+V 1.0.1
 """
 
 import numpy as np
@@ -21,24 +21,26 @@ def hist3(x,binx,biny):
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    H, xedges, yedges = np.histogram2d(x[0],x[1], bins =(binx,biny))
+    
+    H, xedges = np.histogramdd(x, bins = (binx,biny))
 
     H = H.T
 
-    X = list(np.linspace(min(x[0]),max(x[0]),binx))*binx
-    Y = np.sort(list(np.linspace(min(x[1]),max(x[1]),biny))*biny)
-    dz = []
+    X = np.array(list(np.linspace(min(xedges[0]),max(xedges[0]),binx))*binx)     #np.array(list(np.linspace(min(x[0]),max(x[0]),binx))*binx)
+    Y = np.sort(list(np.linspace(min(xedges[1]),max(xedges[1]),biny))*biny)      #np.sort(list(np.linspace(min(x[1]),max(x[1]),biny))*biny)
+    dz = np.array([]);
 
     for i in range(binx):
         for j in range(biny):
-            dz.append(H[i][j])
+            dz = np.append(dz, H[i][j])
     
-    Z = np.zeros(binx**2)
+    Z = np.zeros(binx*biny)
 
-    dx = np.linspace(min(x[0]),max(x[0]),binx)
-    dx = dx[1] - dx[0]
-    dy = np.linspace(min(x[1]),max(x[1]),biny)
-    dy = dy[1] - dy[0]
+    #dx = np.linspace(min(x[0]),max(x[0]),binx)
+    dx = xedges[0][1] - xedges[0][0]
+    
+    #dy = np.linspace(min(x[1]),max(x[1]),biny)
+    dy = xedges[1][1] - xedges[1][0]
 
     ax.bar3d(X,Y,Z,dx,dy,dz, alpha = 0.5)
 
@@ -53,8 +55,9 @@ def hist32(x,y,binx,biny):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
-    H, xedges, yedges = np.histogram2d(x[0],x[1], bins =(binx,biny), normed = True)
-
+    bins = (binx,biny)
+    
+    H, xedges = np.histogramdd(x, bins, normed = False)
     H = H.T
 
     X = list(np.linspace(min(x[0]),max(x[0]),binx))*binx
@@ -74,17 +77,17 @@ def hist32(x,y,binx,biny):
     
     ###########################################################
     
-    H, xedges, yedges = np.histogram2d(y[0],y[1], bins = (binx,biny), normed = True)
+    H, xedges = np.histogramdd(y, bins, normed = True)
 
     H = H.T
 
-    X = list(np.linspace(min(y[0]),max(y[0]),binx))*binx
+    X = np.array(list(np.linspace(min(y[0]),max(y[0]),binx))*binx)
     Y = np.sort(list(np.linspace(min(y[1]),max(y[1]),biny))*biny)
-    dz = []
+    dz = np.array([]);
 
     for i in range(binx):
         for j in range(biny):
-            dz.append(H[i][j])
+            dz= np.append(dz, H[i][j])
     
     Z = np.zeros(binx**2)
 
@@ -95,22 +98,25 @@ def hist32(x,y,binx,biny):
     ax.bar3d(X,Y,Z,dx,dy,dz, alpha = 0.5, color = 'g')
     
     plt.show()
+    
+    
+##################################
 
-#==============================================================================
-# mux = 4
-# sigmax = 2
-# 
-# muy = 0
-# sigmay = 1
-# events = 10000
-# 
-# x = np.random.normal(mux,sigmax,(2,events));
-# y = np.random.normal(muy,sigmay,(2,events));
-# 
-# 
-# 
-# hist32(x,y,100,100)
-#==============================================================================
+mux = 1
+sigmax = 2
+
+muy = 0
+sigmay = 5
+
+events = 1000
+
+#x = np.random.randn(events,2)
+x = np.random.randn(events,2)*sigmax + mux;
+y = np.random.normal(muy,sigmay,(events,2));
+
+
+
+hist3(x,10,10)
 
 
 

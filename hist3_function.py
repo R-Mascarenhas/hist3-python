@@ -4,7 +4,7 @@ Created on Mon Mar 20 22:54:21 2017
 
 @author: Rafael
 
-V 1.1.0
+V 1.1.1
 """
 
 import numpy as np
@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 
 
-def hist3(x,bins = [10,10], normed = False, color = 'blue', alpha = 1, *args,**kwargs):
+def hist3(x,bins = 10, normed = False, color = 'blue', alpha = 1, *args,**kwargs):
     
     import numpy as np
     import matplotlib.pyplot as plt
@@ -22,11 +22,12 @@ def hist3(x,bins = [10,10], normed = False, color = 'blue', alpha = 1, *args,**k
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
+    if np.size(bins) == 1:
+        bins = [bins,bins]
     
     H, edges = np.histogramdd(x, bins = bins, normed = normed)
 
     H = H.T
-    events = bins[0]*bins[1]
     X = np.array(list(np.linspace(min(edges[0]),max(edges[0]),bins[0]))*bins[1])   
     Y = np.sort(list(np.linspace(min(edges[1]),max(edges[1]),bins[1]))*bins[0])    
     

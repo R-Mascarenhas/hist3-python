@@ -4,7 +4,7 @@ Created on Mon Mar 20 22:54:21 2017
 
 @author: Rafael
 
-V 1.0.0
+V 1.1.2
 """
 
 import numpy as np
@@ -12,108 +12,86 @@ import matplotlib.pyplot as plt
 
 
 
-def hist3(x,binx,biny):
+def hist3(x,bins = 10, normed = False, color = 'blue', alpha = 1, hold = False):
     
     import numpy as np
     import matplotlib.pyplot as plt
     import pylab
     from mpl_toolkits.mplot3d import Axes3D
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    H, xedges, yedges = np.histogram2d(x[0],x[1], bins =(binx,biny))
+    
+    
+        
+    
+    if np.size(bins) == 1:
+        bins = [bins,bins]
+    
+    if(len(x) == 2):
+        x = x.T;
+        
+    
+    H, edges = np.histogramdd(x, bins, normed = normed)
 
     H = H.T
-
-    X = list(np.linspace(min(x[0]),max(x[0]),binx))*binx
-    Y = np.sort(list(np.linspace(min(x[1]),max(x[1]),biny))*biny)
-    dz = []
-
-    for i in range(binx):
-        for j in range(biny):
-            dz.append(H[i][j])
+    X = np.array(list(np.linspace(min(edges[0]),max(edges[0]),bins[0]))*bins[1])   
+    Y = np.sort(list(np.linspace(min(edges[1]),max(edges[1]),bins[1]))*bins[0])    
     
-    Z = np.zeros(binx**2)
+    dz = np.array([]);
 
-    dx = np.linspace(min(x[0]),max(x[0]),binx)
-    dx = dx[1] - dx[0]
-    dy = np.linspace(min(x[1]),max(x[1]),biny)
-    dy = dy[1] - dy[0]
-
-    ax.bar3d(X,Y,Z,dx,dy,dz, alpha = 0.5)
-
-
-def hist32(x,y,binx,biny):
+    for i in range(bins[1]):
+        for j in range(bins[0]):
+            dz = np.append(dz, H[i][j])
     
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import pylab
-    from mpl_toolkits.mplot3d import Axes3D
+    Z = np.zeros(bins[0]*bins[1])
 
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    
-    H, xedges, yedges = np.histogram2d(x[0],x[1], bins =(binx,biny), normed = True)
-
-    H = H.T
-
-    X = list(np.linspace(min(x[0]),max(x[0]),binx))*binx
-    Y = np.sort(list(np.linspace(min(x[1]),max(x[1]),biny))*biny)
-    dz = []
-
-    for i in range(binx):
-        for j in range(biny):
-            dz.append(H[i][j])
-    
-    Z = np.zeros(binx**2)
-
+   
     dx = X[1] - X[0]
-    dy = Y[biny]-Y[0]
-
-    ax.bar3d(X,Y,Z,dx,dy,dz, alpha = 0.5)
     
-    ###########################################################
     
-    H, xedges, yedges = np.histogram2d(y[0],y[1], bins = (binx,biny), normed = True)
-
-    H = H.T
-
-    X = list(np.linspace(min(y[0]),max(y[0]),binx))*binx
-    Y = np.sort(list(np.linspace(min(y[1]),max(y[1]),biny))*biny)
-    dz = []
-
-    for i in range(binx):
-        for j in range(biny):
-            dz.append(H[i][j])
+    dy = Y[bins[0]] - Y[0]
     
-    Z = np.zeros(binx**2)
-
+   
     
-    dx = X[1] - X[0]
-    dy = Y[biny]-Y[0]
-
-    ax.bar3d(X,Y,Z,dx,dy,dz, alpha = 0.5, color = 'g')
+    if (not hold):
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        ax.bar3d(X,Y,Z,dx,dy,dz, alpha = alpha, color = color);
+    else:
+        try:
+            ax = plt.gca();
+            ax.bar3d(X,Y,Z,dx,dy,dz, alpha = alpha, color = color);
+        except:
+            plt.close(plt.get_fignums()[-1])
+            fig = plt.figure()
+            ax = fig.add_subplot(111, projection='3d')
+            ax.bar3d(X,Y,Z,dx,dy,dz, alpha = alpha, color = color);
+            
+            
+    plt.xlabel('X');
+    plt.ylabel('Y');
     
-    plt.show()
-
+    edges = [X,Y];
+    hist = dz.reshape(bins[0],bins[1]);
+    
+    return hist, edges
 #==============================================================================
+# 
+# 
 # mux = 4
-# sigmax = 2
+# sigmax = 7
 # 
-# muy = 0
-# sigmay = 1
-# events = 10000
+# muy = 6
+# sigmay = 5
 # 
-# x = np.random.normal(mux,sigmax,(2,events));
+# events = 1000
+# 
+# x = np.random.randn(events,2)*sigmax + mux;
 # y = np.random.normal(muy,sigmay,(2,events));
 # 
 # 
 # 
-# hist32(x,y,100,100)
+# hist3(x,[10,10], normed = True, hold = False, alpha = 0.3)
+# hist3(y,[10,10], normed = True, hold = True, color = 'g', alpha = 0.5)
+# 
+# 
+# 
 #==============================================================================
-
-
-
-
-
-

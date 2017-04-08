@@ -7,16 +7,10 @@ Created on Mon Mar 20 22:54:21 2017
 V 1.1.2
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-
 def hist3(x,bins = 10, normed = False, color = 'blue', alpha = 1, hold = False):
     
     import numpy as np
     import matplotlib.pyplot as plt
-    import pylab
     from mpl_toolkits.mplot3d import Axes3D
     
     
@@ -73,25 +67,4 @@ def hist3(x,bins = 10, normed = False, color = 'blue', alpha = 1, hold = False):
     hist = dz.reshape(bins[0],bins[1]);
     
     return hist, edges
-#==============================================================================
-# 
-# 
-# mux = 4
-# sigmax = 7
-# 
-# muy = 6
-# sigmay = 5
-# 
-# events = 1000
-# 
-# x = np.random.randn(events,2)*sigmax + mux;
-# y = np.random.normal(muy,sigmay,(2,events));
-# 
-# 
-# 
-# hist3(x,[10,10], normed = True, hold = False, alpha = 0.3)
-# hist3(y,[10,10], normed = True, hold = True, color = 'g', alpha = 0.5)
-# 
-# 
-# 
-#==============================================================================
+

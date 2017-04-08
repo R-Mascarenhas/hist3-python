@@ -2,7 +2,8 @@
 Plotting a 3D histogram in python
 
 # Parameters:	
-sample : array_like\n
+sample : array_like
+
 The data to be histogrammed. It must be an (N,2) array or data that can be converted to such. The rows of the resulting array are the coordinates of points in a 2 dimensional polytope.
 bins : sequence or int, optional, default: 10
 The bin specification:

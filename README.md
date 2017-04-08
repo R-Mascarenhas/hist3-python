@@ -1,2 +1,2 @@
 # hist3-python
-hist3 function to python
+Plotting a 3D histogram in python

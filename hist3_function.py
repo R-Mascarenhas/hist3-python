@@ -8,12 +8,12 @@ V 1.1.2
 """
 
 def histogram3d(x,bins = 10, normed = False, color = 'blue', alpha = 1, hold = False):
-    
     """
-    
     Plotting a 3D histogram
+    
     Parameters
     ----------
+
     
     sample : array_like.		
         The data to be histogrammed. It must be an (N,2) array or data 
